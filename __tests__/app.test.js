@@ -27,4 +27,13 @@ describe('get categories api', () => {
 
       })
     })
+    it('404: responds with correct err and status code when passed a pathway that does not exist', () => {
+        return request(app)
+        .get('/api/catagories')
+        .expect(404)
+        .then(({body}) => {
+            expect(body).toEqual({msg: 'Not Found'})
+
+        })
+    })
 })
