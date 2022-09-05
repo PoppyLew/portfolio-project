@@ -15,6 +15,7 @@ describe('get categories api', () => {
       .then(({ body }) => {
         const {categories: categories} = body;
         expect(categories).toBeInstanceOf(Array);
+        expect(categories.length).toBe(4);
         categories.forEach((category) => {
             expect(category).toEqual(
                 expect.objectContaining({
