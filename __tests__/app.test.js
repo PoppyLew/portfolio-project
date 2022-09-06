@@ -39,36 +39,41 @@ describe("get categories api", () => {
 describe("get reviews by id", () => {
   it("responds with a review object with the correct properties", () => {
     return request(app)
-      .get("/api/review/4")
+      .get('/api/reviews/4')
       .expect(200)
       .then(({ body }) => {
-        const { review: review } = body;
-        expect(review).objectContaining({
+        const { review } = body;
+        expect(review).toBeInstanceOf(Array);
+        expect(review.length).toBe(1);
+
+        expect.objectContaining({
           review_id: 4,
           title: expect.any(String),
           review_body: expect.any(String),
           designer: expect.any(String),
           review_img_url: expect.any(String),
-          votes: expect.any(String),
+          votes: expect.any(Number),
           category: expect.any(String),
           owner: expect.any(String),
-          created_at: expect.any(String)
-
+          created_at: expect.any(String),
         });
       });
   });
+  it('400: if passed any data type other than number in the review_id parameter responds with an "invalid input" message', () => {
+    return request(app)
+    .get('/api/reviews/hi')
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe('invalid input')
+    })
+  })
+  it('404: if passed a valid review id that does not exist in the review table responds with an "id does not exist" message', () => {
+    return request(app)
+    .get('/api/reviews/9999')
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe('id does not exist')
+    })
+  })
 });
 
-// Responds with:
-
-// - a review object, which should have the following properties:
-
-//   - `review_id` which is the primary key
-//   - `title`
-//   - `review_body`
-//   - `designer`
-//   - `review_img_url`
-//   - `votes`
-//   - `category` field which references the `slug` in the categories table
-//   -  `owner` field that references a user's primary key (`username`)
-//   - `created_at`
