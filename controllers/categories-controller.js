@@ -2,6 +2,7 @@
 const {
   readCategories,
   readReviewsById,
+  readUsers
 } = require("../models/categories-model");
 
 exports.getCategories = (req, res, next) => {
@@ -21,3 +22,10 @@ exports.getReviewsById = (req, res, next) => {
     .catch(next);
 };
 
+exports.getUsers = (req, res, next) => {
+    readUsers()
+    .then((users) => {
+        res.status(200).send({ users });
+      })
+      .catch(next);
+}

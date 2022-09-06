@@ -17,3 +17,8 @@ exports.readReviewsById = (review_id) => {
     })
 }
 
+exports.readUsers = () => {
+  return db.query(`SELECT * FROM users;`).then((result) => {
+    return result.rows;
+  });
+}
