@@ -17,6 +17,7 @@ exports.readReviewsById = (review_id) => {
     })
 }
 
+
 exports.updateVotesByReviewId = (review_id, voteObj) => {
   if (Object.keys(voteObj).length > 1) {
     return Promise.reject({status: 400, msg: 'Bad Request'})
@@ -34,3 +35,10 @@ exports.updateVotesByReviewId = (review_id, voteObj) => {
     return result.rows[0]
   })
 }
+
+exports.readUsers = () => {
+  return db.query(`SELECT * FROM users;`).then((result) => {
+    return result.rows;
+  });
+}
+

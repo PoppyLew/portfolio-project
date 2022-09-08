@@ -9,6 +9,7 @@ afterAll(() => db.end());
 
 describe("GET categories api", () => {
   it("responds with all categories with correct keys", () => {
+
     return request(app)
       .get("/api/categories")
       .expect(200)
@@ -179,6 +180,36 @@ describe("PATCH on api/review:review id", () => {
     });
 });
 
+describe('get users api', () => {
+  it('responds with an array of all users as objects with correct keys', () => {
+
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users).toBeInstanceOf(Array);
+        expect(users.length).toBe(4);
+        users.forEach((user) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String)
+            })
+          );
+        });
+      });
+  })
+  it("404: responds with correct err and status code when passed a pathway that does not exist", () => {
+    return request(app)
+      .get("/api/usesr")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Not Found" });
+      });
+  });
+})
 
 // No inc_votes on request body
 // Invalid inc_votes (e.g. { inc_votes : "cat" })
