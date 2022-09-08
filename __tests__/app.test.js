@@ -57,6 +57,8 @@ describe("GET reviews by id", () => {
             category: expect.any(String),
             owner: expect.any(String),
             created_at: expect.any(String),
+            comment_count: expect.any(Number)
+            
           })
         );
       });
@@ -76,7 +78,16 @@ describe("GET reviews by id", () => {
       .then(({ body }) => {
         expect(body.msg).toBe("ID does not exist");
       });
-  });
+    });
+    it('response object should include comment_count with the total count of all the comments with this review_id ', () => { return request(app)
+      .get("/api/reviews/2")
+      .expect(200)
+      .then(({ body }) => {
+        const { review } = body;
+        expect(review).toBeInstanceOf(Object);
+        expect(review.comment_count).toBe(3)
+      })
+    })
 });
 
 describe("PATCH on api/review:review id", () => {
@@ -211,9 +222,6 @@ describe('get users api', () => {
   });
 })
 
-// No inc_votes on request body
-// Invalid inc_votes (e.g. { inc_votes : "cat" })
-// Some other property on request body (e.g. { inc_votes : 1, name: 'Mitch' })
 
 
 
