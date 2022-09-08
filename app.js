@@ -4,9 +4,9 @@ const {
   getCategories,
   getReviewsById,
 
-  patchVotesByReviewId
+  patchVotesByReviewId,
 
-  getUsers,
+  getUsers
 
 } = require("./controllers/categories-controller");
 
