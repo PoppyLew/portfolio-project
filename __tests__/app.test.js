@@ -56,8 +56,7 @@ describe("GET reviews by id", () => {
             votes: expect.any(Number),
             category: expect.any(String),
             owner: expect.any(String),
-            created_at: expect.any(String),
-            comment_count: expect.any(Number)
+            created_at: expect.any(String)
             
           })
         );
@@ -86,6 +85,15 @@ describe("GET reviews by id", () => {
         const { review } = body;
         expect(review).toBeInstanceOf(Object);
         expect(review.comment_count).toBe(3)
+      })
+    })
+    it('response object should include comment_count, if no comments have been made with this review id comment_count is 0 ', () => { return request(app)
+      .get("/api/reviews/4")
+      .expect(200)
+      .then(({ body }) => {
+        const { review } = body;
+        expect(review).toBeInstanceOf(Object);
+        expect(review.comment_count).toBe(0)
       })
     })
 });
